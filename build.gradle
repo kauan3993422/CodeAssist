@@ -1,22 +1,39 @@
+// Top-level build file
 buildscript {
-    // 1. Atualizamos a variável para o Kotlin moderno
     ext.kotlin_version = '1.9.22'
-
     repositories {
         google()
-        maven { url 'https://jitpack.io' }
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
-
     dependencies {
-        // 2. Atualizamos o Gradle do Android para suportar o Kotlin novo (de 7.0.3 para 8.1.1)
+        // Motor atualizado para rodar com Java 17
         classpath 'com.android.tools.build:gradle:8.1.1'
-        
-        // 3. CORREÇÃO IMPORTANTE: Agora usamos "$kotlin_version" em vez de um número fixo.
-        // Isso garante que ele obedeça a versão que definimos na linha 3.
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://repo.gradle.org/gradle/libs-releases/' }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+// ESTA ERA A PARTE QUE ESTAVA FALTANDO E CAUSOU O ERRO:
+ext {
+    compileSdkVersion = 34      // Atualizado para suportar Gradle 8
+    buildToolsVersion = '34.0.0'
+    targetSdkVersion = 34
+    minSdkVersion = 26          // Mantido igual ao original
+    
+    applicationId = "com.tyron.code"
+    versionCode = 21
+    versionName = "0.3.0 ALPHA"
 }
